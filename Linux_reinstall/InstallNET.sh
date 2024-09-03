@@ -3265,20 +3265,20 @@ checkEfi "/sys/firmware/efi/efivars/" "/sys/firmware/efi/vars/" "/sys/firmware/e
 
 checkVirt
 
-# 强制设置 sshPORT 为 2222
-sshPORT='2222'
+# 强制设置 sshPORT 为 22
+sshPORT='22'
 
 # 下面的代码可以省略或保留用于其他逻辑检查
 if [[ "$sshPORT" ]]; then
     if [[ ! ${sshPORT} -ge "1" ]] || [[ ! ${sshPORT} -le "65535" ]] || [[ $(grep '^[[:digit:]]*$' <<<'${sshPORT}') ]]; then
-        sshPORT='2222'
+        sshPORT='22'
     fi
 else
     sshPORT=$(grep -Ei "^port|^#port" /etc/ssh/sshd_config | head -n 1 | awk -F' ' '{print $2}')
     [[ "$sshPORT" == "" ]] && sshPORT=$(netstat -anp | grep -i 'sshd: root' | grep -iw 'tcp' | awk '{print $4}' | head -n 1 | cut -d':' -f'2')
     [[ "$sshPORT" == "" ]] && sshPORT=$(netstat -anp | grep -i 'sshd: root' | grep -iw 'tcp6' | awk '{print $4}' | head -n 1 | awk -F':' '{print $NF}')
     if [[ "$sshPORT" == "" ]] || [[ ! ${sshPORT} -ge "1" ]] || [[ ! ${sshPORT} -le "65535" ]] || [[ $(grep '^[[:digit:]]*$' <<<'${sshPORT}') ]]; then
-        sshPORT='2222'
+        sshPORT='22'
     fi
 fi
 
